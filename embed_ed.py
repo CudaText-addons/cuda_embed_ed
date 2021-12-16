@@ -237,7 +237,7 @@ class Command:
         if file_exists:
             embed.show(full_path, nline=nline, caption=caption)
 
-            msg_status(_("Opened '{}' in embedded window").format(caption or full_path))
+            msg_status(_("Opened '{}' in embedded editor, encoding '{}'").format(caption or full_path, embed.embed_enc))
         else:
             msg_status(_('Linked file was not found: {}').format(full_path))
 
@@ -385,9 +385,28 @@ class Hint:
         if self.h is None:
             self.h, self.ed = self.init_form()
 
-
-        with open(full_path, 'r', encoding='utf-8') as f:
-            text = f.read()
+        #### encoding of embedded file is unknown!
+        enc0 = ed.get_prop(PROP_ENC, '') 
+        if enc0 != 'utf8':
+            try:
+                enc = enc0
+                with open(full_path, 'r', encoding=enc) as f:
+                    text = f.read()
+            except:
+                enc = 'utf-8'
+                with open(full_path, 'r', encoding=enc, errors='ignore') as f:
+                    text = f.read()
+        else:
+            try:
+                enc = 'utf-8'
+                with open(full_path, 'r', encoding=enc) as f:
+                    text = f.read()
+            except:
+                enc = 'cp437'
+                with open(full_path, 'r', encoding=enc, errors='ignore') as f:
+                    text = f.read()
+        self.embed_enc = enc
+        #### end of file opening
 
         self.full_path = full_path
         self.nline = nline

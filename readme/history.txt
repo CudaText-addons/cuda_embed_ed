@@ -1,3 +1,7 @@
+
+2021.12.16
++ add: on opening embedded editor, trying to use the same encoding; if it fails, then trying UTF-8; if it fails, load in US-ANSI (patch by Alexey T.)
+
 2021.06.13
 + add: custom path patterns
 + add: api for other plugins to open embedded documents: open_file_embedded()
