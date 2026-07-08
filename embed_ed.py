@@ -86,8 +86,8 @@ def detect_lex(path):
     return _lex
 
 def set_ed_scroll_pos(_ed, scroll_pos):
-    _ed.set_prop(PROP_SCROLL_VERT, scroll_pos[1])
-    _ed.set_prop(PROP_SCROLL_HORZ, scroll_pos[0])
+    _ed.set_prop(PROP_SCROLL_VERT_INFO, {'pos': scroll_pos[1]})
+    _ed.set_prop(PROP_SCROLL_HORZ_INFO, {'pos': scroll_pos[0]})
 
 def set_ed_carets(_ed, carets):
     _ed.set_caret(*carets[0], options=CARET_OPTION_NO_SCROLL)
@@ -632,7 +632,10 @@ class Hint:
 
     def save_scroll_pos(self):
         if self.full_path and self.h:
-            scrol_pos = (self.ed.get_prop(PROP_SCROLL_HORZ), self.ed.get_prop(PROP_SCROLL_VERT))
+            scrol_pos = (
+                self.ed.get_prop(PROP_SCROLL_HORZ_INFO)['pos'],
+                self.ed.get_prop(PROP_SCROLL_VERT_INFO)['pos']
+                )
             self.set_scroll_pos(self.full_path, scrol_pos)
 
     def set_scroll_pos(self, full_path, scrol_pos):
